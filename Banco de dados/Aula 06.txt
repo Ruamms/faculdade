@@ -1,0 +1,137 @@
+create table estudio (
+	cod integer primary key,
+	nome varchar (45),
+	proprietario varchar (45),
+	faturamentoanoanterior decimal (10,2),
+	datafundacao date);
+
+create table atores (
+	cod integer primary key,
+	nome varchar (45),
+	nacionalidade varchar (45),
+	idade integer,
+	sexo varchar (1));
+				  				  
+create table filmes (
+	cod integer primary key,
+	meses integer,
+	nome varchar (45),
+	anolancamento date,
+	custototal decimal (10,2),
+	codestutio integer references estudio (cod));
+			   
+create table atuam(
+	cod integer primary key,
+	codatores integer references atores (cod),
+	codfilmes integer references filmes (cod),
+	salario decimal (10,2),
+	personagem varchar (45));
+						
+INSERT INTO ATORES VALUES
+	(1,'ILL SMITH','AMERICANA',35,'M'),
+	(2,'ANGELINA JOLIE','AMERICANA',34,'F'),
+	(3,'FERNANDA MONTENEGRO','BRASILEIRA',70,'F'),
+	(4,'WAGNER MOURA','BRASILEIRA',36,'M'),
+	(5,'ROBERTO DOWNEY JR','AMERICANA',42,'M');
+						
+INSERT INTO ESTUDIO VALUES
+	(1,'CENTER FILMES','JOÃO',200000.00,'1980-01-29'),
+	(2,'MGM','MICHAEL',178000.00,'1990-01-23'),
+	(3,'UNIVERSAL','DOUGLAS',12000.00,'2000-01-21'),
+	(4,'DISNEY','LUCAS',500000.00,'1980-12-31'),
+	(5,'ARGENTINA FILMES','MARADONA',38700.43,'2005-10-10');
+
+INSERT INTO ATUAM VALUES
+	(1,4,1,100000.00,'CAPITÃO NASCIMENTO'),
+	(2,4,2,18000.00,'JOHN'),
+	(3,1,3,200000.00,'WILL'),
+	(4,1,4,250000.00,'STANLEY'),
+	(5,2,5,350000.00,'MALÉVOLA'),
+	(6,2,6,333000.00,'MARY'),
+	(7,3,7,50000.00,'FERNANDA'),
+	(8,3,8,55000.00,'MARIA'),
+	(9,5,9,700000.00,'TONY STARKS'),
+	(10,5,10,660000.00,'SHERLOCK HOLMES');
+
+INSERT INTO FILMES VALUES
+	(1,20,'TROPA DE ELITE','02/08/2010',200000.00,1),
+	(2,12,'ELYSIUM','02/08/2014',650000.00,4),
+	(3,15,'MIB','02/08/2007',500000.00,2),
+	(4,9,'A PROCURA DA FELICIDADE','02/08/2009',300000.00,2),
+	(5,4,'MALÉVOLA','02/08/2014',178000.00,4),
+	(6,7,'O PROCURADO','02/08/2008',243000.00,1),
+	(7,12,'CENTRAL DO BRASIL','02/08/1998',80000.00,3),
+	(8,3,'O AUTO DA COMPADECIDA','02/08/2000',112777.00,5),
+	(9,21,'HOMEM DE FERRO','02/08/2008',1000000.00,5),
+	(10,36,'SHERLOCK HOLMES','02/08/2009',999999.00,3);
+
+--1
+select nome, datafundacao, faturamentoanoanterior from estudio
+						
+--2
+select es.nome, fl.nome, fl.anolancamento  from estudio es, filmes fl
+order by es.nome,fl.nome;
+
+--3
+select ator.nome, ator.sexo, atu.personagem, atu.salario from atores ator, atuam atu
+
+--4
+select * from filmes
+order by anolancamento asc; 
+
+--5 
+select * from estudio
+select atu.personagem, atu.salario, est.proprietario from atuam atu, estudio est, filmes, atores
+where est.cod = filmes.codestutio
+and atores.cod = atu.codatores
+and filmes.cod = atu.codfilmes
+and atores.nome = 'WAGNER MOURA'
+
+--6
+select * from filmes
+select count (anolancamento) from filmes
+where anolancamento between '1998/08/02' and '2008/08/02'
+
+--7
+select * from estudio
+select count (ator.sexo) from atores ator, estudio est, filmes, atuam atu
+where est.cod = filmes.codestutio
+and ator.cod = atu.codatores
+and filmes.cod = atu.codfilmes
+and sexo LIKE 'F' and est.cod = 3 
+
+--8
+select film.codestutio, film.cod, ator.cod, ator.nacionalidade from filmes film, atores ator, atuam atu, estudio est
+where est.cod = film.codestutio
+and ator.cod = atu.codatores
+and film.cod = atu.codfilmes
+and nacionalidade LIKE '%AMERICANA%';
+
+--9
+select * from atores
+select film.nome, ator.nome, atu.salario from filmes film, atores ator, atuam atu
+where salario > 190000.00;
+
+--10
+select est.nome, film.nome, ator.nome, atu.personagem from estudio est, filmes film, atores ator, atuam atu
+where est.cod = film.codestutio
+and ator.cod = atu.codatores
+and film.cod = atu.codfilmes
+and film.cod = 9 
+
+--11
+select avg (salario) from atuam
+
+--12
+select est.nome, est.proprietario, film.nome, film.meses, film.custototal, atu.personagem, ator.nome, ator.nacionalidade, ator.idade, ator.sexo from estudio est, filmes film, atuam atu, atores ator
+where est.cod = film.codestutio
+and ator.cod = atu.codatores
+and film.cod = atu.codfilmes
+and datafundacao > '1980/02/01' --- alinhar com apartir desta data
+
+						
+						
+	
+			   
+
+

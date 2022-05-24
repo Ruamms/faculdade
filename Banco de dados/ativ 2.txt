@@ -1,0 +1,19 @@
+create table classificao (
+	codigoclass integer primary key,
+	nomeclass varchar (40) not null);
+
+create table materias (
+	codigomaterial integer primary key,
+	nomematerial varchar (40),
+	codigoclass integer references classificao (codigoclass));
+
+drop table movimento
+create table movimento (
+	codigomaterial integer references materias (codigomaterial),
+	datamovimento date,
+	valormovimento float,
+	tipomovimento varchar (1)  check (('E') or ('S')));
+    
+select * from movimento
+
+

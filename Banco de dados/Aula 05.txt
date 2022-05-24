@@ -1,0 +1,70 @@
+--create database aula1503;
+create table Departamento(
+    codigoDep integer primary key,
+    nomeDep varchar(50),
+	localizacao varchar (80));
+--drop table Departamento;						 
+create table funcionario(
+    codigoFunc integer primary key,
+    codigoDep integer references Departamento (codigoDep),
+    nomeFunc varchar(80),
+	dataNascimento date,
+	salario real,
+    funcao varchar(30)
+);
+
+--inserindo dados na tabela
+insert into departamento values
+	(1, 'RH', 'Departamento Pessoal'),
+	(2, 'SP', 'Setor de Suporte'),
+	(3, 'AD', 'Gerência Administrativa'),
+	(4, 'VD', 'Departamento de Vendas'),	
+	(5, 'FI', 'Departamento Financeiro');	
+						 
+select * from departamento;						 
+						 
+insert into funcionario values
+		(1, 1, 'Ana Flores', '13/12/2001', 3.800, 'Gerente' ),	 
+		(2, 1, 'Luan Rosa', '11/01/2008', 1.500, 'Recrutamento' ),
+						 
+		(3, 2, 'Maria Lima', '06/02/1990', 4.200, 'Analista' ),
+		(4, 2, 'Pedro Marques', '13/02/1997', 3.400, 'Infra' ),
+						 
+		(5, 3, 'Matheus Gomes', '09/08/1990', 3.500, 'Gerente Adm' ),
+		(6, 3, 'Pamela Ribeiro', '12/12/2004', 2.200, 'Assistente Adm' ),
+						 
+		(7, 4, 'Gabriel Lemos', '09/08/1984', 6.200, 'Gerente de Vendas' ),
+		(8, 4, 'Ana Lis', '18/12/1978', 2.800, 'Vendedor' ),
+						 
+		(9, 5, 'Mariana Coinbra', '13/12/2001', 3.800, 'Gerente' ),
+	    (10, 5, 'Miriam Pereira', '22/09/1988', 2.200, 'Assistente Financeiro' );	
+						 
+select * from funcionario
+order by nomefunc;
+						 
+select datanascimento, nomefunc from funcionario
+order by datanascimento;
+						 
+select * from departamento
+select nomefunc from funcionario
+where codigodep = 2
+order by nomefunc asc;
+						 
+select count (codigofunc) from funcionario;
+						 
+select avg (salario) from funcionario
+
+select * from funcionario
+						 
+delete from funcionario
+where codigofunc = 4;
+						 
+select * from funcionario
+where codigodep = 2 and salario < 5.000;
+						 
+select max(salario) from funcionario;
+						 
+select * from funcionario
+where nomefunc LIKE '%n%';
+						 
+						 

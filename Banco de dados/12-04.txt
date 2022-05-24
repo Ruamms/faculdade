@@ -1,0 +1,85 @@
+create table pais (
+	codpais integer primary key,
+	nome varchar(35),
+	continente varchar(35),
+	pop real,
+	pib real,
+	expec_vida real);
+    
+create table cidade(
+	codcidade integer primary key,
+    codpais integer references pais(codpais),
+	nome varchar(35),
+	pais varchar(35),
+	pop real,
+	capital varchar(1));
+
+create table rio (
+	codrio integer primary key,
+    codcidade integer references cidade(codcidade),
+    nome varchar(45),
+	origem varchar(35),
+    pais varchar(35),
+	comprimento integer);  
+    
+insert into pais values
+	(1, 'Canada', 'Am. Norte', 30.1, 658, 77.08),
+    (2, 'Mexico', 'Am. Norte', 107.5, 694, 69.1),
+    (3, 'Brasil', 'Am. Sul', 183.3, 1004, 65.2),
+    (4, 'USA', 'Am. Norte', 270.0, 8003, 75.5);
+    
+insert into cidade values
+	(1, 4, 'Washington', 'USA', 3.3, 'S'),
+    (2, 2, 'Monterrey', 'Mexico', 2.0, 'N'),
+    (3, 3, 'Brasilia', 'Brasil', 1.5, 'S'),
+    (4, 3, 'São Paulo', 'Brasil', 15.0, 'N'),
+    (5, 1, 'Ottawa', 'Canada', 0.8, 'S'),
+    (6, 2, 'Cid. Mexico', 'Mexico', 14.1, 'S');
+
+insert into rio values
+	(1, 1, 'St Lawrence', 'USA', 'USA', 3.3),
+    (2, 2, 'Grande', 'USA', 'Mexico', 2.0),
+    (3, 4, 'Parana', 'Brasil', 'Brasil', 1.5),
+    (4, 1, 'Mississipi', 'USA', 'USA', 15.0);
+    
+--1
+select cid.nome, pa.nome from cidade cid, pais pa
+where cid.codpais = pa.codpais;
+
+select nome, pais from cidade;
+
+--2
+select nome, capital from cidade
+where capital like 'S';
+
+--3
+select * from pais
+where expec_vida < 70;
+
+--4
+select cid.nome, cid.capital, pa.pop, pa.pib from cidade cid, pais pa
+where capital like 'S'
+and cid.codpais = pa.codpais
+and pa.pib > 1000
+
+--5
+select cid.nome, cid.pop, cid.capital, cid.pais, r.nome from cidade cid, rio r
+where capital like 'S'
+and r.codcidade = cid.codcidade
+and r.nome like 'St Lawrence'
+
+--6
+select avg (pop) from cidade
+where capital like 'N'
+
+--7
+select pa.continente, avg (pib) from pais pa
+group by pa.continente;
+
+--8
+select min (r.comprimento) from rio r
+where r.origem like 'USA'
+
+--9
+select nome, pib from pais
+where pib > (select pib from pais where nome = 'Canada')

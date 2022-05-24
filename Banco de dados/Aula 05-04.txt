@@ -1,0 +1,87 @@
+create table TabelaA (
+	nome varchar (50) null
+);
+
+create table TabelaB (
+	nome varchar (50) null
+);
+
+insert into TabelaA values ('Fernanda');
+insert into TabelaA values ('Josefa');
+insert into TabelaA values ('Luiz');
+insert into TabelaA values ('Fernando');
+
+insert into TabelaB values ('Carlos');
+insert into TabelaB values ('Manoel');
+insert into TabelaB values ('Luiz');
+insert into TabelaB values ('Fernando');
+
+select a.nome, b.nome
+from TabelaA as a
+inner join TabelaB as b
+	on a.nome = b.nome
+
+select a.nome, b.nome
+from TabelaA as a 
+left join TabelaB as b
+	on a.nome = b.nome
+    
+select a.nome, b.nome
+from TabelaA as a
+right join TabelaB as b
+	on a.nome = b.nome
+    
+select a.nome, b.nome
+from TabelaA as a
+full outer join TabelaB as b
+	on a.nome = b.nome
+    
+select a.nome, b.nome
+from TabelaA as A
+left join TabelaB as B
+	on a.nome = b.nome
+where b.nome is null
+
+select a.nome, b.nome
+from TabelaA as A
+right join TabelaB as B
+	on a.nome = b.nome
+where a.nome is null
+
+select a.nome, b.nome
+from TabelaA as A
+full outer join TabelaB as B
+	on a.nome = b.nome
+where a.nome is null or b.nome is null
+
+create table curso (
+	codCurso integer not null primary key,
+	nomeCurso varchar (40),
+	duracaoCurso varchar (20),
+	dataPublicacaodate);
+
+create table aluno (
+	matricula varchar (20) not null primary key,
+	nome varchar (50),
+	dtNascimento date,
+	telefone varchar (15),
+	bairro varchar (40),
+	cep varchar (11),
+	codCurso integer references curso (codCurso));
+    
+insert into #curso (codCurso, nomeCurso, duracaoCurso, dataPublicacao) values
+(1, 'Excel', '5 meses', '02/08/2021'),
+(2, 'Word', '4 meses', '02/09/2021'),
+(3, 'Power Point', '2 meses', '03/11/2021'),
+(4, 'Windows', '6 meses', '03/12/2021'),
+(5, 'Redes', '7 meses', '04/12/2021'),
+
+insert into #aluno (matricula, nome, dtNascimento, telefone, bairro, cep, codCurso) values
+('1231', 'André', '11/12/2004', '21 98765-9971', 'Campo Grande', '23098-020', 1),
+('1232', 'Edielson', '01/10/2003', '21 98765-9972', 'Bangu', '23098-020', 2),
+('1233', 'Robson', '12/12/2002', '21 98765-9973', 'Realengo', '23098-020', 3),
+('1234', 'Alex', '09/04/2006', '21 98765-9974', 'Campo Grande', '23098-020', 2),
+('1235', 'Felipe', '06/05/2008', '21 98765-9975', 'Campo Grande', '23098-020', 2),
+('1236', 'Gabriel', '01/01/1980', '21 98765-9976', 'Campo Grande', '23098-020', 3),
+('1237', 'Pedro', '07/07/2005', '21 98765-9977', 'Campo Grande', '23098-020', 4),
+('1238', 'Silvestre', '04/06/1952', '21 98765-9978', 'Campo Grande', '23098-020', null),

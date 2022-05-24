@@ -1,0 +1,29 @@
+create table funcionario (
+	codfun integer primary key,
+	nomefun varchar (40));
+    
+create table dependentes (
+	coddep integer primary key,
+	nomedep varchar (40),
+	idade integer,
+	codfun integer references funcionario (codfun));
+	
+insert into funcionario values 
+	(1, 'Valéria'),
+   	(2, 'Andressa'),
+    (3, 'Marcos'),
+    (4, 'Vinicius'),
+    (5, 'Viviane'),
+    (6, 'Carlos');
+
+insert into dependentes values
+	(1, 'Victor', 5, 2),
+    (2, 'André', 2, 3),
+    (3, 'Vitória', 12,3);
+    
+select f.codfun, f.nomefun, d.coddep, d.nomedep, d.idade
+from funcionario as f
+inner join dependentes as d
+	on f.codfun = d.codfun
+    
+    
