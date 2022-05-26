@@ -1,0 +1,84 @@
+DROP TABLE Emprestimo;
+DROP TABLE Conta;
+DROP TABLE Agencia;
+DROP TABLE Cliente;
+
+CREATE TABLE Cliente (
+	codCliente INTEGER PRIMARY KEY,
+	cliente VARCHAR(45),
+	profissao VARCHAR(45),
+	localidade VARCHAR(45));
+    
+CREATE TABLE Agencia (
+	codAgencia INTEGER PRIMARY KEY,
+	agencia VARCHAR(45),
+	localidade VARCHAR(45));
+    
+CREATE TABLE Conta (
+	numConta INTEGER PRIMARY KEY,
+	tipoConta VARCHAR(45),
+	codCliente INTEGER REFERENCES Cliente (codCliente),
+	codAgencia INTEGER REFERENCES Agencia (codAgencia),
+	saldo REAL);
+    
+CREATE TABLE Emprestimo (
+	numEmprestimo INTEGER PRIMARY KEY,
+	codCliente INTEGER REFERENCES Cliente (codCliente),
+	codAgencia INTEGER REFERENCES Agencia (codAgencia),
+	valor REAL);
+    
+-- Cadastre 10 clientes, 3 agencias, 2 contas em agencia e 3 emprestimos
+INSERT INTO Cliente VALUES
+    (01, 'Felipe Matos', 'Arquiteto', 'São Paulo'),
+    (02, 'Paulo Medeiros', 'Militar', 'Curitiba'),
+    (03, 'Maria Eloisa Costa', 'Jornalista', 'Rio de Janeiro'),
+    (04, 'Elisabete Marinho', 'Professora', 'São Paulo'),
+    (05, 'José Carlos Silva', 'Arquiteto', 'Curitiba'),
+    (06, 'Luisa Farias', 'Auxiliar Administrativa', 'São Paulo'),
+    (07, 'João Victor Motta', 'Bombeiro', 'Rio de Janeiro'),
+    (08, 'Eduarda Silva', 'Promotora', 'Rio de Janeiro'),
+    (09, 'Bruna Campos', 'Designer Gráfica', 'São Paulo'),
+    (10, 'Gabriela Gomes', 'Militar', 'Curitiba');
+    
+INSERT INTO Agencia VALUES
+    (1, 'Santa Cruz', 'Rio de Janeiro'),
+    (2, 'Boa Vista', 'Curitiba'),
+    (3, 'Pinheiros', 'São Paulo'),
+    (4, 'Sobradinho', 'Brasília'),
+    (5, 'Goiania', 'Goiás');
+    
+INSERT INTO Conta VALUES
+    (113, 'Conta Corrente', 4, 3, 20000.00),
+    (111, 'Conta Corrente', 10, 2, 5000.00),
+    (112, 'Conta Corrente', 2, 2, 8000.00);
+    
+INSERT INTO Emprestimo VALUES
+    (11, 06, 3, 9000.00),
+    (12, 07, 1, 2000.00),
+    (13, 04, 2, 15000.00);
+    
+select * from cliente    
+
+CREATE VIEW vwcliente as SELECT * from cliente
+
+select * from vwcliente
+
+create view vwrj as seleCt * from cliente where localidade = 'Rio de Janeiro';
+
+select * from vwrj
+
+--Criando uma view
+--Quais clientes pertencem a um determinado banco?
+
+CREATE VIEW vwteste as
+select c.cliente from cliente c
+inner join conta co on (co.codCliente=c.codCliente)
+where co.codAgencia is not null;
+
+--Visualizando uma view
+
+SELECT * from vwteste;
+
+create view teste AS SELECT * FROM CLIENTE C
+INNER JOIN
+

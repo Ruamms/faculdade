@@ -1,0 +1,122 @@
+create table Cliente(
+	CodCliente integer primary key,
+	Cliente varchar(40),
+	Profissao varchar(40),
+	Localidade varchar(40));
+    
+create table Agencia(
+	CodAgencia integer primary	key,
+	agencia varchar(40),
+	Localidade varchar(40));
+    
+create table Conta(
+	numConta integer primary key,
+	tipoConta varchar(40),
+	CodCliente integer references Cliente (CodCliente),
+	CodAgencia integer references Agencia (CodAgencia),
+	Saldo integer);
+    
+create table Emprestimo(
+	numEmprestimo integer primary key,
+	CodCliente integer references Cliente (CodCliente),
+	CodAgencia integer references Agencia (CodAgencia),
+	Valor integer);
+    
+insert into Cliente values
+	(01, 'Carlos', 'Soldado', 'Rio de Janeiro' ),
+	(02, 'Fabio', 'Brigadeiro', 'Rio de Janeiro'),
+	(03, 'Antonio', 'Coronel', 'Rio de Janeiro'),
+	(04, 'Pedro', 'Tenente', 'Rio de Janeiro'),
+	(05, 'João', 'Major', 'Rio de Janeiro'),
+	(06, 'Felipe', 'Cabo', 'Rio de Janeiro'),
+	(07, 'Antonio', 'Capitão', 'Rio de Janeiro'),
+	(08, 'Carlos', 'Subtenente', 'Rio de Janeiro'),
+	(09, 'Gabriel', 'Tenente-Coronel', 'Rio de Janeiro'),
+	(10, 'Hermes', 'Marechal', 'Rio de Janeiro');
+
+insert into Agencia values
+	(001, 'Itau', 'Rio de Janeiro'),
+	(002, 'Bradesco', 'Rio de Janeiro'),
+	(003, 'Santander', 'Rio de Janeiro');
+
+insert into Conta values
+	(101, 'Salário', 01, 001, 103.23),
+	(102, 'Corrente', 02, 001, 125683.42),
+	(103, 'Corrente', 03, 001, 30568.92),
+	(201, 'Corrente', 04, 002, 3256.69),
+	(202, 'Corrente', 05, 002, 15236.98),
+	(203, 'Salário', 06, 002, 589.96),
+	(301, 'Corrente', 07, 003, 9658.36),
+	(302, 'Corrente', 08, 003, -4565.56),
+	(303, 'Corrente', 09, 003, 20.23),
+	(304, 'Corrente', 10, 003, -100.23);
+    
+insert into Emprestimo values
+	(1001, 08, 003, 15000),
+    	(1002, 01, 001, 3000),
+   	 (1003, 06, 002, 5000);
+
+-- A
+select * from conta co
+inner join agencia ag on(ag.CodAgencia = co.CodAgencia)
+inner join cliente cl on(cl.CodCliente = co.CodCliente);
+
+-- B
+select Cliente, Localidade from cliente
+order by cliente
+
+-- C
+select cl.Cliente, ag.Agencia from conta co
+inner join agencia ag on(ag.CodAgencia = co.CodAgencia)
+inner join cliente cl on(cl.CodCliente = co.CodCliente);
+
+-- D
+select cl.Cliente, cl.localidade, ag.Agencia, ag.localidade from conta co
+inner join agencia ag on(ag.CodAgencia = co.CodAgencia)
+inner join cliente cl on(cl.CodCliente = co.CodCliente)
+where cl.localidade = ag.localidade;
+
+-- E
+select cl.Cliente, em.valor from emprestimo em
+inner join agencia ag on(ag.CodAgencia = em.CodAgencia)
+inner join cliente cl on(cl.CodCliente = em.CodCliente)
+where valor > 2500;
+
+-- F
+select cl.Cliente, cl.profissao from Cliente cl
+where profissao = 'Brigadeiro';
+
+-- G
+select co.numConta, co.saldo, ag.agencia from conta co
+inner join agencia ag on(ag.CodAgencia = co.CodAgencia)
+where ag.Codagencia = 003;
+
+-- H
+select count (numConta) from conta
+
+-- I
+select count(numConta) from conta co
+inner join agencia ag on(ag.CodAgencia = co.CodAgencia)
+where ag.Codagencia = 003;
+    
+-- J
+select count(co.numconta) from conta co
+inner join agencia ag on(ag.CodAgencia = co.CodAgencia)
+group by ag.Agencia
+
+-- K
+select max(saldo), min(saldo), avg(saldo) from conta co
+inner join agencia ag on (ag.codAgencia = co.codAgencia)
+group by co.codAgencia;
+
+-- L 
+select cl.Cliente from emprestimo em
+inner join agencia ag on(ag.CodAgencia = em.CodAgencia)
+inner join cliente cl on(cl.CodCliente = em.CodCliente)
+
+-- M
+select * from conta co
+inner join agencia ag on (ag.codAgencia = co.CodAgencia)
+inner join emprestimo emp on (ag.codAgencia = emp.codAgencia)
+where co.saldo >= (select max(valor) from emprestimo);
+
