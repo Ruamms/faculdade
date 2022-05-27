@@ -107,7 +107,7 @@ where current_date = datapedido
 
 --6
 create view PRODUTOS_DEFASADOS_VIEW as
-SELECT descricao, datapedido, SUM(quantidade) as quantidade
+SELECT descricao, SUM(quantidade) as quantidade
 FROM tudo_view 
 where datapedido > '2022-02-01'
-group by descricao, datapedido
+group by descricao
