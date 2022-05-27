@@ -1,36 +1,36 @@
 CREATE TABLE EX_CLIENTE(
-    codcliente int ,
+    codclientecl int ,
     nome varchar(60),
     datanascimento date,
     cpf varchar(11),
-    CONSTRAINT pk_ex_cliente PRIMARY KEY (codcliente)
+    CONSTRAINT pk_ex_cliente PRIMARY KEY (codclientecl)
     );
 
 CREATE TABLE EX_PEDIDO(
-    codpedido int,
-    codcliente int,
+    codpedidope int,
+    codclientepe int,
     datapedido date,
     nf varchar(12),
     valortotal decimal(10,2),
-    CONSTRAINT pk_ex_pedido PRIMARY KEY (codpedido),
-    CONSTRAINT pk_ex_pedido_cliente FOREIGN KEY (codcliente) REFERENCES
-    EX_CLIENTE(codcliente));
+    CONSTRAINT pk_ex_pedido PRIMARY KEY (codpedidope),
+    CONSTRAINT pk_ex_pedido_cliente FOREIGN KEY (codclientepe) REFERENCES
+    EX_CLIENTE(codclientecl));
 
 CREATE TABLE EX_PRODUTO(
-    codproduto int,
+    codprodutopr int,
     descricao varchar(100),
-    CONSTRAINT pk_ex_produto PRIMARY KEY (codproduto));
+    CONSTRAINT pk_ex_produto PRIMARY KEY (codprodutopr));
 
 CREATE TABLE EX_ITEMPEDIDO(
-    codpedido int,
-    numeroitem int,
+    codpedidoit int,
+    numeroitemit int,
     valorunitario decimal(10,2),
     quantidade int,
-    codproduto int,
-    CONSTRAINT pk_itempedido PRIMARY KEY (codpedido, numeroitem),
-    CONSTRAINT fk_codpedido FOREIGN KEY (codpedido) REFERENCES EX_PEDIDO (codpedido),
-    CONSTRAINT fk_itempedido_produto FOREIGN KEY (codproduto) REFERENCES EX_PRODUTO
-    (codproduto));
+    codprodutoit int,
+    CONSTRAINT pk_itempedido PRIMARY KEY (codpedidoit, numeroitemit),
+    CONSTRAINT fk_codpedido FOREIGN KEY (codpedidoit) REFERENCES EX_PEDIDO (codpedidope),
+    CONSTRAINT fk_itempedido_produto FOREIGN KEY (codprodutoit) REFERENCES EX_PRODUTO
+    (codprodutopr));
 
 INSERT INTO EX_CLIENTE VALUES (1, 'Sylvio Barbon', TO_DATE('05/12/1984', 'DD/MM/YYYY'),
 '12315541212');
@@ -46,13 +46,13 @@ INSERT INTO EX_CLIENTE VALUES (5, 'Maria Cristina Goes', TO_DATE('03/11/1981',
 '67715541212');
 INSERT INTO EX_CLIENTE VALUES (6, 'Ruan Manoel Fanjo', TO_DATE('06/12/1983', 'DD/MM/YYYY'),
 '32415541212');
-INSERT INTO EX_CLIENTE VALUES (7, 'Patrícia Marques', TO_DATE('01/02/1944', 'DD/MM/YYYY'),
+INSERT INTO EX_CLIENTE VALUES (7, 'PatrÃ­cia Marques', TO_DATE('01/02/1944', 'DD/MM/YYYY'),
 '77715541212');
 
 INSERT INTO EX_PRODUTO VALUES (1, 'Mouse');
 INSERT INTO EX_PRODUTO VALUES (2, 'Teclado');
 INSERT INTO EX_PRODUTO VALUES (3, 'Monitor LCD');
-INSERT INTO EX_PRODUTO VALUES (4, 'Caixas Acústicas');
+INSERT INTO EX_PRODUTO VALUES (4, 'Caixas AcÃºsticas');
 INSERT INTO EX_PRODUTO VALUES (5, 'Scanner de Mesa');
 INSERT INTO EX_PEDIDO VALUES (1, 1, TO_DATE('01/04/2012', 'DD/MM/YYYY'), '00001', 400.00);
 INSERT INTO EX_ITEMPEDIDO VALUES (1, 1, 10.90, 1, 1);
@@ -74,9 +74,9 @@ INSERT INTO EX_ITEMPEDIDO VALUES (6, 1, 25.50, 2, 4);
 --0
 create view tudo_view as
 select * from ex_cliente as cl
-inner join ex_pedido AS pe ON(pe.codCliente = cl.codCliente)
-inner join ex_itempedido as it on(it.codPedido = pe.codpedido)
-inner join ex_produto as pr on(pr.codproduto = it.codproduto);
+inner join ex_pedido AS pe ON(pe.codClientepe = cl.codClientecl)
+inner join ex_itempedido as it on(it.codPedidoit = pe.codpedidope)
+inner join ex_produto as pr on(pr.codprodutopr = it.codprodutoit);
 
 
 
