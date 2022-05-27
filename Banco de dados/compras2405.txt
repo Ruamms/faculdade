@@ -80,14 +80,34 @@ inner join ex_produto as pr on(pr.codproduto = it.codproduto);
 
 
 
---1 **
-create CLIENTES_MAIORES_VIEW as 
-SELECT datanascimento(DATE '2014-04-01', 'DD/MM/YYYY') FROM ex_cliente
-where datanascimento > '1992-01-01'
+--1
+create view CLIENTES_MAIORES_VIEW as
+select nome, (extract(year from current_date) - extract(year from datanascimento)) as Idade from ex_cliente
+where datanascimento < '01-01-1992'
 
---2
+
+--2****
 create ULTIMO_PEDIDO_VIEW as
-select cl.nome, pr.descricao from ex_cliente as cl
+select tudo_view.nome, tudo_view.descricao from tudo_view join (select nome, max(codpedidope) ultimaData from tudo_view
+                             group by nome) ultimoRegistro
+                             on tudo_view.codpedidope = ultimoRegistro.UltimaData
+                             and tudo_view.nome = ultimoRegistro.nome
+                             
+--3                             
+create view TABELA_PRODUTO_VIEW as
+select descricao, max(valorunitario) from tudo_view
+group by descricao
 
+--4
+create view LISTA_NOTA_VIEW as
+select nf, datapedido from tudo_view
+where current_date = datapedido
 
+--5
 
+--6
+create view PRODUTOS_DEFASADOS_VIEW as
+SELECT descricao, datapedido, SUM(quantidade) as quantidade
+FROM tudo_view 
+where datapedido > '2022-02-01'
+group by descricao, datapedido
